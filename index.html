@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Valentine for You 💘</title>
+
+  <style>
+    :root{
+      --bg1:#fff1f6;
+      --bg2:#f3f5ff;
+      --ink:#1e1e2a;
+      --muted:#5b5b78;
+      --card:#ffffffcc;
+      --border:#ffffff70;
+      --shadow: 0 18px 50px rgba(20,10,40,.14);
+      --pink:#ff5a8f;
+      --pink2:#ff93b7;
+      --lav:#8f8bff;
+      --mint:#53e3c3;
+      --radius: 26px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
+    body{
+      margin:0;
+      font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(1000px 600px at 12% 8%, rgba(255,90,143,.28), transparent 55%),
+        radial-gradient(900px 500px at 88% 15%, rgba(143,139,255,.25), transparent 55%),
+        radial-gradient(900px 500px at 80% 90%, rgba(83,227,195,.20), transparent 55%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* ================= OPENING SCREEN ================= */
+    #opening{
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(1000px 600px at 12% 8%, rgba(255,90,143,.28), transparent 55%),
+        radial-gradient(900px 500px at 88% 15%, rgba(143,139,255,.25), transparent 55%),
+        radial-gradient(900px 500px at 80% 90%, rgba(83,227,195,.20), transparent 55%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      transition: opacity .7s ease;
+    }
+    #opening.hide{
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .openingWrap{
+      width: min(980px, 92vw);
+      display: grid;
+      gap: 18px;
+      align-items: center;
+      justify-items: center;
+      padding: 18px 0;
+    }
+
+    .photoCollage{
+      width: min(860px, 92vw);
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      padding: 12px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.8);
+      box-shadow: 0 18px 50px rgba(20,10,40,.10);
+      backdrop-filter: blur(10px);
+    }
+    .photoCollage img{
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.85);
+      box-shadow: 0 10px 22px rgba(20,10,40,.08);
+      transform: rotate(var(--r, 0deg));
+      background: rgba(255,255,255,.75);
+      display:block;
+    }
+    .photoCollage img:nth-child(1){ --r:-3deg; }
+    .photoCollage img:nth-child(2){ --r: 2deg; }
+    .photoCollage img:nth-child(3){ --r:-2deg; }
+    .photoCollage img:nth-child(4){ --r: 3deg; }
+    .photoCollage img:nth-child(5){ --r:-1deg; }
+    .photoCollage img:nth-child(6){ --r: 2deg; }
+
+    @media (max-width: 720px){
+      .photoCollage{ grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .envelopeStage{
+      display: grid;
+      gap: 14px;
+      justify-items: center;
+    }
+
+    .envelope{
+      width: 280px;
+      height: 190px;
+      position: relative;
+      filter: drop-shadow(0 20px 40px rgba(20,10,40,.18));
+    }
+
+    .envBack{
+      position:absolute; inset:0;
+      border-radius: 22px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(255,255,255,.9);
+    }
+
+    .envFront{
+      position:absolute; inset:0;
+      border-radius: 22px;
+      background:
+        linear-gradient(135deg, rgba(255,90,143,.22), rgba(143,139,255,.18)),
+        rgba(255,255,255,.55);
+      border: 1px solid rgba(255,255,255,.9);
+      clip-path: polygon(0 30%, 50% 68%, 100% 30%, 100% 100%, 0 100%);
+    }
+
+    .envFlap{
+      position:absolute; inset:0;
+      border-radius: 22px;
+      background:
+        linear-gradient(135deg, rgba(255,90,143,.25), rgba(143,139,255,.22)),
+        rgba(255,255,255,.65);
+      border: 1px solid rgba(255,255,255,.9);
+      clip-path: polygon(0 30%, 50% 0%, 100% 30%, 50% 68%);
+      transform-origin: top center;
+      transform: rotateX(0deg);
+      transition: transform .6s ease;
+    }
+
+    .envLetter{
+      position:absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 16px;
+      height: 145px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(255,255,255,.95);
+      box-shadow: 0 14px 30px rgba(20,10,40,.10);
+      transform: translateY(44px);
+      transition: transform .7s ease;
+      padding: 14px;
+      display:flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .letterTop{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .seal{
+      width: 42px; height: 42px;
+      border-radius: 14px;
+      display:grid; place-items:center;
+      background: linear-gradient(135deg, var(--pink), var(--lav));
+      color: white;
+      font-weight: 1000;
+      box-shadow: 0 10px 22px rgba(255,90,143,.18);
+    }
+    .letterTitle{
+      font-weight: 1000;
+      font-size: 15px;
+      line-height: 1.1;
+    }
+    .letterSub{
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+      margin-top: 2px;
+    }
+    .letterHint{
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .openBtn{
+      padding: 12px 18px;
+      border: none;
+      border-radius: 18px;
+      font-weight: 1000;
+      color: white;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--pink), var(--lav));
+      box-shadow: 0 16px 35px rgba(255,90,143,.20);
+      transition: transform .12s ease, filter .12s ease;
+    }
+    .openBtn:hover{ transform: translateY(-1px); filter:saturate(1.06); }
+    .openBtn:active{ transform: translateY(0px) scale(.99); }
+    .openBtn:disabled{ opacity:.8; cursor:not-allowed; }
+
+    .envelope.open .envFlap{ transform: rotateX(180deg); }
+    .envelope.open .envLetter{ transform: translateY(-8px); }
+
+    /* ================= MAIN PAGE ================= */
+    .hearts{
+      position:fixed; inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:0;
+    }
+    .heart{
+      position:absolute;
+      width:16px; height:16px;
+      transform: rotate(45deg);
+      opacity:.55;
+      animation: floatUp linear infinite;
+    }
+    .heart::before, .heart::after{
+      content:"";
+      position:absolute;
+      width:16px; height:16px;
+      border-radius:50%;
+      background:inherit;
+    }
+    .heart::before{ left:-8px; top:0; }
+    .heart::after{ top:-8px; left:0; }
+    @keyframes floatUp{
+      from { transform: translateY(110vh) rotate(45deg); }
+      to   { transform: translateY(-20vh) rotate(45deg); }
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 26px 18px 70px;
+    }
+
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      margin-bottom: 18px;
+      flex-wrap:wrap;
+    }
+    .logo{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800;
+    }
+    .logoBadge{
+      width:40px; height:40px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(255,90,143,.75), rgba(143,139,255,.65));
+      box-shadow: 0 10px 25px rgba(255,90,143,.18);
+      display:grid; place-items:center;
+      color:white; font-size:18px;
+    }
+
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; }
+    .chip{
+      text-decoration:none;
+      padding:10px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.55);
+      border:1px solid rgba(255,255,255,.7);
+      color: var(--ink);
+      box-shadow: 0 8px 20px rgba(20,10,40,.06);
+      font-weight:700;
+      font-size:13px;
+      transition:.2s transform, .2s filter;
+      backdrop-filter: blur(10px);
+    }
+    .chip:hover{ transform: translateY(-1px); filter:saturate(1.08); }
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    @media (max-width: 900px){ .hero{ grid-template-columns:1fr; } }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      padding: 18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::after{
+      content:"";
+      position:absolute; inset:-40px -40px auto auto;
+      width:160px; height:160px;
+      background: radial-gradient(circle at 35% 35%, rgba(255,90,143,.35), transparent 60%);
+      transform: rotate(10deg);
+      pointer-events:none;
+    }
+
+    h1{
+      margin: 0 0 10px 0;
+      font-size: clamp(28px, 3.2vw, 42px);
+      line-height: 1.08;
+    }
+
+    .sub{
+      margin:0;
+      color: var(--muted);
+      line-height:1.65;
+      font-size: 15px;
+      white-space: pre-line;
+      font-weight:650;
+    }
+
+    .tagRow{ display:flex; gap:8px; flex-wrap:wrap; margin: 10px 0 14px; }
+    .tag{
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.6);
+      border: 1px solid rgba(255,255,255,.8);
+      font-size: 12px;
+      font-weight: 800;
+      color: #2a2a3a;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .tag i{
+      width:10px; height:10px; border-radius:50%;
+      background: linear-gradient(135deg, var(--pink), var(--lav));
+      display:inline-block;
+    }
+
+    .btnRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+    .btn{
+      border:0;
+      cursor:pointer;
+      padding: 12px 14px;
+      border-radius: 16px;
+      font-weight: 900;
+      letter-spacing:.2px;
+      color: #1c1c28;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(255,255,255,.85);
+      box-shadow: 0 10px 25px rgba(20,10,40,.10);
+      transition: transform .12s ease, filter .12s ease;
+      display:inline-flex; align-items:center; gap:10px;
+    }
+    .btn:hover{ transform: translateY(-1px); filter:saturate(1.08); }
+    .btn:active{ transform: translateY(0px) scale(.99); }
+
+    .btn.primary{
+      color:white;
+      border: 0;
+      background: linear-gradient(135deg, var(--pink), var(--lav));
+      box-shadow: 0 16px 35px rgba(255,90,143,.22);
+    }
+    .btn .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: currentColor;
+      opacity:.85;
+    }
+    .btn.primary .dot{ background: rgba(255,255,255,.9); }
+
+    .stickerGrid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:12px;
+    }
+    .sticker{
+      padding:14px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.85);
+      background: rgba(255,255,255,.65);
+      box-shadow: 0 12px 26px rgba(20,10,40,.08);
+      position:relative;
+      overflow:hidden;
+    }
+    .sticker .big{ font-size:26px; font-weight:1000; margin-bottom:6px; }
+    .sticker .small{ color:var(--muted); font-size:13px; line-height:1.45; margin:0; font-weight:650; }
+    .sticker::before{
+      content:"";
+      position:absolute; inset:auto auto -50px -40px;
+      width:180px; height:180px;
+      background: radial-gradient(circle at 40% 35%, rgba(83,227,195,.30), transparent 60%);
+      transform: rotate(-12deg);
+    }
+
+    .section{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width: 900px){ .section{ grid-template-columns:1fr; } }
+
+    .titleRow{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom:10px;
+    }
+    .h2{ margin:0; font-size: 16px; font-weight: 1000; display:flex; align-items:center; gap:10px; }
+    .bubble{
+      padding:8px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.65);
+      border:1px solid rgba(255,255,255,.85);
+      font-size:12px;
+      font-weight:900;
+      color: #2a2a3a;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+
+    .letter{
+      border-radius: 22px;
+      background: rgba(255,255,255,.55);
+      border:1px solid rgba(255,255,255,.85);
+      padding:14px;
+      min-height: 160px;
+      box-shadow: 0 12px 26px rgba(20,10,40,.06);
+    }
+    .letterText{
+      white-space: pre-wrap;
+      line-height: 1.8;
+      color: #2b2b3a;
+      margin:0;
+      font-weight: 700;
+      display:none;
+    }
+    .hint{
+      margin:0;
+      color: var(--muted);
+      line-height:1.55;
+      font-size: 13px;
+      font-weight:650;
+    }
+
+    .reasonBox{
+      border-radius: 22px;
+      background: rgba(255,255,255,.55);
+      border: 1px dashed rgba(143,139,255,.55);
+      padding:14px;
+      min-height: 120px;
+      display:flex; align-items:center; justify-content:center;
+      text-align:center;
+      font-weight: 1000;
+      font-size: 16px;
+      color:#2a2a3a;
+      box-shadow: 0 12px 26px rgba(20,10,40,.06);
+    }
+
+    .coupons{ display:grid; gap:10px; }
+    .coupon{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:12px 12px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.55);
+      border:1px solid rgba(255,255,255,.85);
+      box-shadow: 0 10px 22px rgba(20,10,40,.06);
+    }
+    .coupon strong{ display:block; font-size:14px; }
+    .coupon small{ color: var(--muted); display:block; margin-top:2px; font-weight:650; }
+    .coupon label{ display:flex; align-items:center; gap:8px; font-weight:900; color:#2a2a3a; font-size:12px; }
+    .coupon input{ width:16px; height:16px; accent-color: var(--pink); }
+
+    .toast{
+      position: fixed;
+      left:50%; bottom: 16px;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(255,255,255,.85);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 12px 30px rgba(20,10,40,.12);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-weight: 950;
+      color:#2a2a3a;
+      display:none;
+      z-index: 5;
+    }
+
+    footer{
+      margin-top:16px;
+      color: var(--muted);
+      text-align:center;
+      font-size: 12.5px;
+      font-weight:650;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- OPENING -->
+  <div id="opening">
+    <div class="openingWrap">
+      <div class="photoCollage" id="photoCollage">
+        <!-- sesuai struktur folder kamu: D:\Valentine\img\a1.jpg -->
+        <img src="img/a1.jpg" alt="Alisha 1" onerror="this.style.display='none'">
+        <img src="img/a2.jpg" alt="Alisha 2" onerror="this.style.display='none'">
+        <img src="img/a3.jpg" alt="Alisha 3" onerror="this.style.display='none'">
+        <img src="img/a4.jpg" alt="Alisha 4" onerror="this.style.display='none'">
+        <img src="img/a5.jpg" alt="Alisha 5" onerror="this.style.display='none'">
+        <img src="img/a6.jpg" alt="Alisha 6" onerror="this.style.display='none'">
+      </div>
+
+      <div class="envelopeStage">
+        <div class="envelope" id="envelope">
+          <div class="envBack"></div>
+          <div class="envFlap"></div>
+
+          <div class="envLetter">
+            <div class="letterTop">
+              <div class="seal">💗</div>
+              <div>
+                <div class="letterTitle">Untuk Alisha</div>
+                <div class="letterSub">Klik tombolnya ya…</div>
+              </div>
+            </div>
+            <div class="letterHint">*musik nyala setelah dibuka 🎵</div>
+          </div>
+
+          <div class="envFront"></div>
+        </div>
+
+        <button class="openBtn" id="openBtn" onclick="openEnvelope()">
+          Buka Surat 💌
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MUSIC (sesuai folder kamu: D:\Valentine\lagu.mp3) -->
+  <audio id="bgMusic" src="lagu.mp3" preload="auto" loop></audio>
+
+  <div class="hearts" aria-hidden="true" id="hearts"></div>
+
+  <div class="wrap">
+    <div class="topbar">
+      <div class="logo">
+        <div class="logoBadge">💘</div>
+        <div>
+          <div style="font-size:14px; font-weight:1000;">Valentine Mini Universe</div>
+          <div style="font-size:12px; color:var(--muted); font-weight:800;">edisi: Valentine</div>
+        </div>
+      </div>
+
+      <div class="nav">
+        <a class="chip" href="#surat">📩 Surat</a>
+        <a class="chip" href="#alasan">🎲 Alasan</a>
+        <a class="chip" href="#kupon">🎟 Kupon</a>
+      </div>
+    </div>
+
+    <div class="hero">
+      <section class="card">
+        <div class="tagRow">
+          <span class="tag"><i></i> dibuat khusus untuk <span id="namaTag">[Nama]</span></span>
+          <span class="tag"><i></i> status: sayang kamu</span>
+          <span class="tag"><i></i> risiko: bikin kangen</span>
+        </div>
+
+        <h1>Happy Valentine, <span id="namaHero">[Nama]</span> 💗</h1>
+        <p class="sub" id="subHero"></p>
+
+        <div class="btnRow">
+          <button class="btn primary" onclick="revealLetter()"><span class="dot"></span> Buka Surat</button>
+          <button class="btn" onclick="randomReason()"><span class="dot"></span> Kasih 1 Alasan Imut</button>
+          <button class="btn" onclick="confettiHearts()"><span class="dot"></span> Mode Gemas</button>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="stickerGrid">
+          <div class="sticker">
+            <div class="big">✨</div>
+            <p class="small"><b>Reminder:</b> kamu itu favoritku. Iya, favorit. Jangan debat.</p>
+          </div>
+          <div class="sticker">
+            <div class="big">🧸</div>
+            <p class="small"><b>Note kecil:</b> kalau kamu capek, aku siap jadi “tempat istirahat”.</p>
+          </div>
+          <div class="sticker">
+            <div class="big">🍓</div>
+            <p class="small"><b>Fun fact:</b> aku kangen kamu dengan cara yang tidak ilmiah.</p>
+          </div>
+          <div class="sticker">
+            <div class="big">🔒</div>
+            <p class="small"><b>Keamanan:</b> hati ini sudah “auto-lock” ke kamu.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="section">
+      <section class="card" id="surat">
+        <div class="titleRow">
+          <h2 class="h2">📩 Surat buat kamu</h2>
+          <span class="bubble">dibaca pelan-pelan ya</span>
+        </div>
+
+        <div class="letter">
+          <p class="hint" id="letterHint">Klik tombol “Buka Surat”. Nanti tulisannya muncul pelan-pelan.</p>
+          <p class="letterText" id="letterText"></p>
+        </div>
+
+        <div class="btnRow" style="margin-top:12px">
+          <button class="btn primary" onclick="revealLetter()"><span class="dot"></span> Buka / Ulangi Surat</button>
+          <button class="btn" onclick="copyLetter()"><span class="dot"></span> Salin Surat</button>
+        </div>
+      </section>
+
+      <section class="card" id="alasan">
+        <div class="titleRow">
+          <h2 class="h2">🎲 Alasan aku sayang kamu</h2>
+          <span class="bubble">Alasan aku sayang Alisha</span>
+        </div>
+
+        <div class="reasonBox" id="reasonBox">Klik “Kasih 1 Alasan Imut”.</div>
+
+        <div class="btnRow" style="margin-top:12px">
+          <button class="btn primary" onclick="randomReason()"><span class="dot"></span> Acak Lagi</button>
+          <button class="btn" onclick="copyReason()"><span class="dot"></span> Salin</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" id="kupon" style="margin-top:14px">
+      <div class="titleRow">
+        <h2 class="h2">🎟 Kupon Valentine</h2>
+        <span class="bubble">boleh ditagih kapan saja</span>
+      </div>
+
+      <div class="coupons" id="coupons"></div>
+
+      <!-- Spotify embed optional (boleh hapus kalau ga perlu) -->
+      <iframe style="border-radius:12px"
+        src="https://open.spotify.com/embed/track/7F4tV8SiUy6itZTdAzdafO?utm_source=generator"
+        width="100%" height="152" frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"></iframe>
+    </section>
+
+    <footer>
+      Dibuat dengan: niat oleh Fariz. 💗
+    </footer>
+  </div>
+
+  <div class="toast" id="toast">Copied ✨</div>
+
+  <script>
+    // =========================
+    // CONFIG (EDIT DI SINI)
+    // =========================
+    const pacarName = "Alisha Nadda Setiawan";
+
+    const heroSub =
+      "Pagi-pagi doing my routine\n" +
+      "Siangnya liat orang baik\n" +
+      "Selamat Hari Valentine\n" +
+      "Untuk kamu yang selalu cantik.";
+
+    const letterText =
+`Hai Alishaaa,
+
+Selamat Valentine ya. 💗
+Ini adalah cara ungkapan sayang aku ke kamu,
+bukan cuma tentang bunga dan cokelat yang membeku,
+tapi tentang satu hal yang selalu kembali ke kamu.
+
+Aku sayang kamu.
+Iya, kamu.
+Kemarin kamu, besok kamu, selalu kamu.
+Semoga aku jadi masa depanmu.
+
+Kalau kamu suka mikir aneh-aneh,
+inget: di hati ini cuma ada satu nama—kamu.
+Karena sejauh apa pun langkahku,
+ujungnya tetap pulang ke kamu.
+
+Satu cinta yang tak pernah mendua,
+cintaku yang tetap di situ-situ aja: di kamu.
+Cintaku abadi seperti salju di Papua,
+untuk kamu—Alisha Nadda.
+
+I love you 1000x.
+
+— Fariz Faisal`;
+
+    const reasons = [
+      "Karena kamu bikin aku senyum tanpa sadar.",
+      "Karena cara kamu peduli itu nyata, bukan sekadar kata.",
+      "Karena kamu bisa jadi rumah sekaligus petualangan.",
+      "Karena kamu lucu tanpa usaha.",
+      "Karena kamu ngerti aku bahkan saat aku belum rapi menjelaskan.",
+      "Karena kamu bikin hal kecil terasa penting.",
+      "Karena kamu sabar menghadapi aku.",
+      "Karena kalau kamu ketawa, rasanya dunia ikut ringan.",
+      "Karena kamu selalu berusaha, meskipun lagi capek.",
+      "Karena kamu punya hati yang hangat.",
+      "Karena kamu bikin aku pengin jadi versi yang lebih baik.",
+      "Karena kamu itu favorit. Tidak ada kompetitor.",
+      "Karena kamu bikin aku merasa dipilih."
+    ];
+
+    const couponList = [
+      { title: "100000x Main TOD", note: "Kali ini harus ada Dare nya." },
+      { title: "100000x Volunteer Date", note: "Lagiiii yukkkkk." },
+      { title: "100000x PhotoBooth", note: "Favorite kamu nihhh." },
+      { title: "1x Pelukan ekstra panjang", note: "Sampai kamu tenang." }
+    ];
+    // =========================
+
+    // Names + hero text
+    document.getElementById("namaTag").textContent = pacarName;
+    document.getElementById("namaHero").textContent = pacarName;
+    document.getElementById("subHero").textContent = heroSub;
+
+    // Render coupons
+    const couponsEl = document.getElementById("coupons");
+    couponsEl.innerHTML = "";
+    couponList.forEach((c) => {
+      const row = document.createElement("div");
+      row.className = "coupon";
+      row.innerHTML = `
+        <div>
+          <strong>${escapeHtml(c.title)}</strong>
+          <small>${escapeHtml(c.note)}</small>
+        </div>
+        <label>
+          <input type="checkbox" onchange="toggleClaim(this)">
+          claimed
+        </label>
+      `;
+      couponsEl.appendChild(row);
+    });
+
+    function toggleClaim(cb){
+      const card = cb.closest(".coupon");
+      card.style.opacity = cb.checked ? 0.6 : 1;
+      card.style.filter = cb.checked ? "grayscale(.25)" : "none";
+    }
+
+    // Typewriter letter
+    let letterTimer = null;
+    function revealLetter(){
+      clearInterval(letterTimer);
+      const hint = document.getElementById("letterHint");
+      const el = document.getElementById("letterText");
+      hint.style.display = "none";
+      el.style.display = "block";
+      el.textContent = "";
+      location.hash = "#surat";
+
+      let i = 0;
+      const speed = 16;
+      letterTimer = setInterval(() => {
+        el.textContent += letterText[i] ?? "";
+        i++;
+        if (i >= letterText.length) clearInterval(letterTimer);
+      }, speed);
+    }
+
+    // Reasons
+    function randomReason(){
+      const el = document.getElementById("reasonBox");
+      const pick = reasons[Math.floor(Math.random() * reasons.length)];
+      el.textContent = pick;
+      location.hash = "#alasan";
+    }
+
+    // Copy helpers
+    async function copyReason(){
+      const text = document.getElementById("reasonBox").textContent.trim();
+      if(!text) return;
+      await safeCopy(text);
+      toast("Alasan tersalin ✨");
+    }
+    async function copyLetter(){
+      await safeCopy(letterText);
+      toast("Surat tersalin ✨");
+    }
+    async function safeCopy(text){
+      try{ await navigator.clipboard.writeText(text); }
+      catch(e){
+        const ta = document.createElement("textarea");
+        ta.value = text; document.body.appendChild(ta);
+        ta.select(); document.execCommand("copy");
+        document.body.removeChild(ta);
+      }
+    }
+    function toast(msg){
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.style.display = "block";
+      setTimeout(()=> t.style.display="none", 1200);
+    }
+
+    // Floating hearts background
+    const heartsLayer = document.getElementById("hearts");
+    function spawnHearts(){
+      const colors = [
+        "rgba(255,90,143,.55)",
+        "rgba(255,147,183,.55)",
+        "rgba(143,139,255,.45)",
+        "rgba(83,227,195,.40)"
+      ];
+      const count = 18;
+      for(let i=0;i<count;i++){
+        const h = document.createElement("div");
+        h.className = "heart";
+        const size = rand(10, 18);
+        h.style.width = size+"px";
+        h.style.height = size+"px";
+        h.style.left = rand(0, 100) + "vw";
+        h.style.animationDuration = rand(7, 13) + "s";
+        h.style.animationDelay = rand(0, 8) + "s";
+        h.style.background = colors[Math.floor(Math.random()*colors.length)];
+        heartsLayer.appendChild(h);
+      }
+    }
+    spawnHearts();
+
+    function confettiHearts(){
+      const colors = [
+        "rgba(255,90,143,.85)",
+        "rgba(255,147,183,.85)",
+        "rgba(143,139,255,.80)",
+        "rgba(83,227,195,.75)"
+      ];
+      for(let i=0;i<26;i++){
+        const h = document.createElement("div");
+        h.className = "heart";
+        const size = rand(10, 16);
+        h.style.width = size+"px";
+        h.style.height = size+"px";
+        h.style.left = rand(10, 90) + "vw";
+        h.style.bottom = "-10vh";
+        h.style.animationDuration = rand(3, 5) + "s";
+        h.style.background = colors[Math.floor(Math.random()*colors.length)];
+        h.style.opacity = 0.9;
+        heartsLayer.appendChild(h);
+        setTimeout(()=> h.remove(), 5200);
+      }
+      toast("Mode gemas: ON 💘");
+    }
+
+    function rand(min,max){ return Math.random()*(max-min)+min; }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    // =========================
+    // OPENING -> MAIN + MUSIC (ANTI STUCK)
+    // =========================
+    function openEnvelope(){
+      const env = document.getElementById("envelope");
+      const btn = document.getElementById("openBtn");
+      const opening = document.getElementById("opening");
+      const music = document.getElementById("bgMusic");
+
+      btn.disabled = true;
+      btn.textContent = "Membuka... 💗";
+
+      env.classList.add("open");
+
+      // play musik TANPA await (biar ga nge-freeze)
+      try{
+        music.volume = 0;
+        const p = music.play();
+        if (p && typeof p.then === "function"){
+          p.then(() => {
+            let v = 0;
+            const fade = setInterval(() => {
+              v += 0.03;
+              music.volume = Math.min(v, 0.4);
+              if (v >= 0.4) clearInterval(fade);
+            }, 120);
+          }).catch(() => {
+            // autoplay ditolak: tetap lanjut, ga masalah
+          });
+        }
+      }catch(e){}
+
+      // SELALU masuk halaman utama
+      setTimeout(() => {
+        opening.classList.add("hide");
+        setTimeout(() => { opening.style.display = "none"; }, 750);
+      }, 900);
+    }
+  </script>
+</body>
+</html>
